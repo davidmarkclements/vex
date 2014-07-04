@@ -4,6 +4,8 @@
   "description": "A Schema Validator",
   "main": "index.js",
   "scripts": {
+    "precommit": "npm test",
+    "prepush": "npm test",
     "test": "node_modules/.bin/mocha -u qunit test",
     "test-watch": "node_modules/.bin/mocha -w -u qunit test",
     "debug-test": "node_modules/.bin/node-debug -c node_modules/.bin/_mocha -u qunit"
