@@ -11,7 +11,7 @@ will be rejected.
 
 #### Usage
 
-Intead of doing this
+Instead of doing this
 
 ```
 function buildAThing(config) {
