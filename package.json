@@ -1,0 +1,16 @@
+{
+  "name": "vex",
+  "version": "0.0.0",
+  "description": "A Schema Validator",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/mocha -u qunit test",
+    "test-watch": "node_modules/.bin/mocha -w -u qunit test",
+    "debug-test": "node_modules/.bin/node-debug -c node_modules/.bin/_mocha -u qunit"
+  },
+  "author": "David Mark Clements",
+  "license": "MIT",
+  "devDependencies": {
+    "node-inspector": "^0.7.4"
+  }
+}
