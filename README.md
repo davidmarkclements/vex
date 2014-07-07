@@ -9,6 +9,12 @@ If the object doesn't satisfy the schema, then
 schema is considered "vexed", thus the object
 will be rejected.
 
+#### Install
+
+```sh
+npm install
+```
+
 #### Usage
 
 Instead of doing this
