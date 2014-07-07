@@ -105,6 +105,14 @@ an else statement - which would create an
 extra level of nexting and put error handling
 in an unintuitive place (at the bottom).
 
+#### Tests
+Tests are written with mocha framework, to run
+simply do
+
+```
+npm test
+```
+
 
 ### Todo
 
