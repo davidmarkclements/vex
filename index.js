@@ -3,7 +3,6 @@ var settings = {
     required: ['req', '&'],
     optional: ['opt', '|'],
     illegal: ['ill', '!'],
-    type: 'type',
     assert: /assert/i
   },
   messages: {
@@ -16,7 +15,10 @@ var settings = {
   },
   throw: true,
   batch: false,
-  NaNIsNum: false 
+  NaNIsNum: false,
+  Element: typeof Element !== 'undefined' ? Element : null,
+  Node: typeof Node !== 'undefined' ? Node : null
+
 };
 
 function fetchSchemaSet(schema, label) {
@@ -44,14 +46,23 @@ function fetchMessage(key, type, messageType) {
   return key + message + type;
 }
 
-function valid(value, type) {
+function is(value, type) {
   var ctor, typeofValue = value === null ? 'null' : typeof value;
 
+  //Element and Node are special cases, where we check
+  //for instanceof (e.g. multi-level inheritance)
+  //instead of the immediate constructor only
+  if (settings.Element && type === settings.Element) {
+    return value instanceof type;
+  }
+  if (settings.Node && type === settings.Node) {
+    return value instanceof type;
+  }
   
   //if the type is an object literal,
   //this must be another schema
   if (type && type.constructor === Object && !vex(value, type)) {
-    type = type[fetchSchemaSet(value, 'type')] || Object; 
+    type = Object; 
   }
 
   type = Number.isNaN(type) ? 'nan' : type;
@@ -64,7 +75,7 @@ function valid(value, type) {
   }
 
   if (Array.isArray(type)) {
-    return type.some(function(t) {return valid(value, t);});
+    return type.some(function(t) {return is(value, t);});
   }
 
   if (type instanceof Function) {
@@ -86,7 +97,7 @@ function valid(value, type) {
     ctor = type.substring(0,1).toUpperCase() + type.substring(1);
 
     if (global[ctor] instanceof Function) {
-      return valid(value, global[ctor]);
+      return is(value, global[ctor]);
     }
 
     return (typeofValue === type);
@@ -110,7 +121,7 @@ function invalidate(target, schema, requiring) {
       };
     }
 
-    if ((key in target) && !valid(target[key], schema[key])) {
+    if ((key in target) && !is(target[key], schema[key])) {
       return {
         key: key,
         type: schema[key] && schema[key].name || schema[key],
@@ -121,11 +132,9 @@ function invalidate(target, schema, requiring) {
   }
 }
 
-
 function error(key, reason) {
   return Error('Schema has been vexed: "' + reason);
 }
-
 
 function vexed(invalid) {
   var key = invalid.key;
@@ -185,6 +194,6 @@ function vex(target, schema) {
 }
 
 vex.settings = settings;
-
+vex.is = is;
 
 module.exports = vex;
