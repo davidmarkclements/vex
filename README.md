@@ -1,6 +1,8 @@
 ### Vex
 #### A Schema Validator
 
+[![Build Status](https://travis-ci.org/davidmarkclements/vex.svg?branch=master)](https://travis-ci.org/davidmarkclements/vex)
+
 Vex is a handy client side and Node module
 that "proofs" an object according to a supplied
 schema. 
