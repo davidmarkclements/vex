@@ -11,9 +11,26 @@ will be rejected.
 
 #### Install
 
+##### Node
+
 ```sh
 npm install
 ```
+
+##### Browser
+vex.js and vex.min.js are available in the dist folder.
+Client-side Vex is a UMD bundle generated with Browserify, 
+this means if you're using Require.js or some form of AMD
+you can load it as a client-side module using your 
+module loader of choice. If not vex is exported to the
+global scope as `vex`.
+
+The client code can be generated with 
+
+```
+npm run dist
+```
+
 
 #### Usage
 
@@ -92,6 +109,7 @@ in an unintuitive place (at the bottom).
   * Update and bulk out readme
   * Settings tests
   * Fail batching
+  * Browser testing
 
 
 

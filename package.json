@@ -1,11 +1,14 @@
 {
   "name": "vex",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A Schema Validator",
   "main": "index.js",
   "scripts": {
     "precommit": "npm test",
     "prepush": "npm test",
+    "dist": "npm run dist-dev & npm run dist-min",
+    "dist-dev": "node_modules/.bin/browserify -s vex -e index.js > dist/vex.js",
+    "dist-min": "node_modules/.bin/browserify -s vex -e index.js | uglifyjs > dist/vex.min.js",
     "test": "node_modules/.bin/mocha -u qunit test",
     "test-watch": "node_modules/.bin/mocha -w -u qunit test",
     "debug-test": "node_modules/.bin/node-debug -c node_modules/.bin/_mocha -u qunit"
@@ -16,6 +19,8 @@
     "node-inspector": "^0.7.4",
     "husky": "^0.5.1",
     "mocha": "^1.20.1",
-    "min-document": "^2.8.1"
+    "min-document": "^2.8.1",
+    "uglifyjs": "^2.3.6",
+    "browserify": "^4.2.0"
   }
 }
