@@ -16,7 +16,7 @@ will be rejected.
 ##### Node
 
 ```sh
-npm install
+npm install vex
 ```
 
 ##### Browser
