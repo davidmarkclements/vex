@@ -81,6 +81,12 @@ extra level of nexting and put error handling
 in an unintuitive place (at the bottom).
 
 
+### Todo
+
+  * Update and bulk out readme
+  * Settings tests
+  * Fail batching
+
 
 
 
