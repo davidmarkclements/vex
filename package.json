@@ -4,8 +4,8 @@
   "description": "A Schema Validator",
   "main": "index.js",
   "scripts": {
-    "precommit": "npm test",
-    "prepush": "npm test",
+    "precommit": "npm run test-no-cov",
+    "prepush": "npm run test-no-cov",
     "dist": "npm run dist-dev & npm run dist-min",
     "dist-dev": "node_modules/.bin/browserify -s vex -e index.js > dist/vex.js",
     "dist-min": "node_modules/.bin/browserify -s vex -e index.js | uglifyjs > dist/vex.min.js",
@@ -14,6 +14,7 @@
     "test": "npm run coverage && npm run coveralls",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- -u qunit -R spec",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "test-no-cov": "node_modules/.bin/mocha -u qunit test",
     "test-watch": "node_modules/.bin/mocha -w -u qunit test",
     "debug-test": "node_modules/.bin/node-debug -c node_modules/.bin/_mocha -u qunit"
   },
