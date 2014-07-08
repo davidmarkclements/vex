@@ -3,6 +3,8 @@
 
 [![Build Status](https://travis-ci.org/davidmarkclements/vex.svg?branch=master)](https://travis-ci.org/davidmarkclements/vex)
 
+[![Coverage Status](https://img.shields.io/coveralls/davidmarkclements/vex.svg)](https://coveralls.io/r/davidmarkclements/vex?branch=master)
+
 Vex is a handy client side and Node module
 that "proofs" an object according to a supplied
 schema. 
