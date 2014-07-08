@@ -12,7 +12,7 @@
     "dist-test": "node_modules/.bin/browserify -s vexModule -e index.js > client-test/vex.js",
     "build-client-test": "node_modules/.bin/browserify test/index.js > client-test/test.js",
     "test": "npm run coverage && npm run coveralls",
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- -u qunit -R spec",
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- -u qunit",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "test-no-cov": "node_modules/.bin/mocha -u qunit test",
     "test-watch": "node_modules/.bin/mocha -w -u qunit test",
