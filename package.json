@@ -9,10 +9,24 @@
     "dist": "npm run dist-dev & npm run dist-min",
     "dist-dev": "node_modules/.bin/browserify -s vex -e index.js > dist/vex.js",
     "dist-min": "node_modules/.bin/browserify -s vex -e index.js | uglifyjs > dist/vex.min.js",
-    "test": "node_modules/.bin/mocha -u qunit test",
+    "dist-test": "node_modules/.bin/browserify -s vexModule -e index.js > client-test/vex.js",
+    "build-client-test": "node_modules/.bin/browserify test/index.js > client-test/test.js",
+    "test": "npm run coverage && npm run coveralls",
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- -u qunit -R spec",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "test-watch": "node_modules/.bin/mocha -w -u qunit test",
     "debug-test": "node_modules/.bin/node-debug -c node_modules/.bin/_mocha -u qunit"
   },
+  "testling": {
+    "harness": "mocha-tdd",
+    "files": "test/*.js",
+    "browsers": [
+      "ie/8..latest",
+      "chrome/latest",
+      "firefox/latest"
+    ]
+  },
+  "repository": "https://github.com/davidmarkclements/vex",
   "author": "David Mark Clements",
   "license": "MIT",
   "devDependencies": {
@@ -22,6 +36,9 @@
     "min-document": "^2.8.1",
     "uglifyjs": "^2.3.6",
     "browserify": "^4.2.0",
-    "chai": "^1.9.1"
+    "chai": "^1.9.1",
+    "coveralls": "^2.11.1",
+    "mocha-lcov-reporter": "0.0.1",
+    "istanbul": "^0.3.0"
   }
 }
