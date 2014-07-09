@@ -9,7 +9,7 @@ if (typeof window === 'undefined') {
 function vex() {
   return vex.module.bind.apply(vex.module, [null].concat([].slice.call(arguments)));
 }
-vex.module = typeof vexModule !== 'undefined' ? vexModule : require('..');
+vex.module = require('../index.js');
 vex.settings = vex.module.settings;
 
 if (typeof window === 'undefined') {

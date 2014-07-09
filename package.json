@@ -24,7 +24,7 @@
     "debug-test": "node_modules/.bin/node-debug -c node_modules/.bin/_mocha -u qunit"
   },
   "testling": {
-    "harness": "mocha-tdd",
+    "harness": "mocha-qunit",
     "files": "test/*.js",
     "browsers": [
       "ie/8..latest",
