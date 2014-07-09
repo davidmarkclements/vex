@@ -4,7 +4,7 @@
   "description": "A Schema Validator",
   "main": "index.js",
   "watch": {
-    "cov-and-clean": "{src,test}/*.js"
+    "cov-and-clean": ["index.js", "test/*.js"]
   },
   "scripts": {
     "precommit": "npm run test-no-cov",

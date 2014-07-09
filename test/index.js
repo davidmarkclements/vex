@@ -1,24 +1,23 @@
 var should = require('chai').should();
 
+if (typeof window === 'undefined') {
+  global.Element = function Element() { }
+  global.Node = function Node() { }  
+}
+
 //partially apply vex, allows us to use the .should.throw() syntax
 function vex() {
   return vex.module.bind.apply(vex.module, [null].concat([].slice.call(arguments)));
 }
-vex.module = require('..');
+vex.module = typeof vexModule !== 'undefined' ? vexModule : require('..');
 vex.settings = vex.module.settings;
 
-if (typeof document === 'undefined') {
-  var document = require('min-document');
-  function Element() {}
-  function Node() {}
-  
+if (typeof window === 'undefined') {
+  window = global;
+  window.document = require('min-document'); 
   document.documentElement.__proto__.__proto__ = new Element;
   document.createTextNode('').__proto__.__proto__ = new Node;
-  
-  vex.settings.Element = Element;
-  vex.settings.Node = Node;
-}  
-
+}
 
 suite('vex')
 test('should fail if a target is not supplied', function () {
@@ -819,9 +818,62 @@ test('should be initiated when vex is not passed a schema and the parent functio
   testing.bind(testing, {test:22}).should.throw();
 })
 
+suite('vex._labelled') 
+test('should exit early when available labels array length is zero', function () {
+
+  vex.settings.labels.test = [];
+  should.equal(vex.module._labelled({}, 'test'), undefined);
+  delete vex.settings.labels.test;
+
+})
+
 suite('settings: throw')
+test(' - when true, should throw when schema is vexed', function () {
+  vex({test:''}, {test:Number}).should.throw();
+})
+
+test(' - when true, should not throw when schema is satisifed', function () {
+  vex({test:''}, {test:String}).should.not.throw();
+})
+
+test(' - when false, should not throw whether schema is vexed or satisifed', function () {
+  var throwDef = vex.settings.throw;
+
+  vex.settings.throw = false;
+
+  vex({test:''}, {test:Number}).should.not.throw();
+  vex({test:''}, {test:String}).should.not.throw();
+
+  vex.settings.throw = throwDef;
+
+});
+
+test(' - when false, should return an error object when schema is vexed', function () {
+  var throwDef = vex.settings.throw;
+
+  vex.settings.throw = false;
+  vex.module({test:''}, {test: Number}).should.be.an.instanceof(Error)
+  vex.module({test:''}, {req: {test:Number}}).should.be.an.instanceof(Error)
+  vex.module({}, {req: {test:String}}).should.be.an.instanceof(Error)
+
+  vex.settings.throw = throwDef;
+
+})
+
+test(' - when false, should return false when schema is satisifed', function () {
+  var throwDef = vex.settings.throw;
+
+  vex.settings.throw = false;
+  should.equal(false, vex.module({test:''}, {test: String}))
+  should.equal(false, vex.module({test:''}, {required: {test:String}}))
+
+  vex.settings.throw = throwDef;
+
+})
+
 suite('settings: batch')
 suite('settings: labels')
+suite('settings: messages')
 suite('settings: NaNIsNum')
 suite('settings: Element')
 suite('settings: Node')

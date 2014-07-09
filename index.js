@@ -16,15 +16,12 @@ var settings = {
   throw: true,
   batch: false,
   NaNIsNum: false,
-  Element: typeof Element !== 'undefined' ? Element : null,
-  Node: typeof Node !== 'undefined' ? Node : null
-
+  Element: typeof Element !== 'undefined' && Element,
+  Node: typeof Node !== 'undefined' && Node
 };
 
-function fetchSchemaSet(schema, label) {
-  if (!schema) {return;}
+function labelled(schema, label) {
   var labels = settings.labels[label];
-  if (typeof labels === 'string') {return labels;}
   
   var i = labels.length;
   var schemaSet;
@@ -39,11 +36,7 @@ function fetchSchemaSet(schema, label) {
 
 function fetchMessage(key, type, messageType) {
   var message = settings.messages[messageType];
-  if (!message) {return '';}
-  if (message instanceof Function) {
-    return message(key, type);
-  }
-  return key + message + type;
+  return message(key, type);
 }
 
 function is(value, type) {
@@ -92,16 +85,15 @@ function is(value, type) {
     type = type === null ? 'null' : typeof type;
   }
 
-  if (typeof type === 'string') {
     
-    ctor = type.substring(0,1).toUpperCase() + type.substring(1);
+  ctor = type.substring(0,1).toUpperCase() + type.substring(1);
 
-    if (global[ctor] instanceof Function) {
-      return is(value, global[ctor]);
-    }
-
-    return (typeofValue === type);
+  if (global[ctor] instanceof Function) {
+    return is(value, global[ctor]);
   }
+
+  return (typeofValue === type);
+  
 }
 
 function invalidate(target, schema, requiring) {
@@ -113,7 +105,7 @@ function invalidate(target, schema, requiring) {
   if (i <= 0) {return;}
   while (i--) {
     key = properties[i];
-    if (!key) {continue;}
+
     if (requiring && !(key in target)) {
       return {
         key: key,
@@ -140,13 +132,7 @@ function vexed(invalid) {
   var key = invalid.key;
   var type = invalid.type;
   var reason = invalid.reason;
-  if (!key) {return;}
-
   var err = error(key, fetchMessage(key, type, reason));
-
-  if (settings.vexed instanceof Function) {
-    return settings.vexed(err);
-  }
 
   return err;  
 }
@@ -166,8 +152,8 @@ function vex(target, schema) {
     }, {});
   }
 
-  var required = fetchSchemaSet(schema, 'required');
-  var optional = fetchSchemaSet(schema, 'optional');
+  var required = labelled(schema, 'required');
+  var optional = labelled(schema, 'optional');
   var err;
 
   if (!required) {
@@ -195,5 +181,6 @@ function vex(target, schema) {
 
 vex.settings = settings;
 vex.is = is;
+vex._labelled = labelled;
 
 module.exports = vex;
