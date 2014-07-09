@@ -3,6 +3,9 @@
   "version": "0.0.2",
   "description": "A Schema Validator",
   "main": "index.js",
+  "watch": {
+    "cov-and-clean": "{src,test}/*.js"
+  },
   "scripts": {
     "precommit": "npm run test-no-cov",
     "prepush": "npm run test-no-cov",
@@ -16,6 +19,8 @@
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "test-no-cov": "node_modules/.bin/mocha -u qunit test",
     "test-watch": "node_modules/.bin/mocha -w -u qunit test",
+    "cov-and-clean": "npm run coverage && rm -rf ./coverage",
+    "test-cov-watch": "npm-watch",
     "debug-test": "node_modules/.bin/node-debug -c node_modules/.bin/_mocha -u qunit"
   },
   "testling": {
@@ -40,6 +45,7 @@
     "chai": "^1.9.1",
     "coveralls": "^2.11.1",
     "mocha-lcov-reporter": "0.0.1",
-    "istanbul": "^0.3.0"
+    "istanbul": "^0.3.0",
+    "npm-watch-no-prefix": "0.0.0"
   }
 }
