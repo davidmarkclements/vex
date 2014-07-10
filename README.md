@@ -1,5 +1,5 @@
-### Vex
-#### A Schema Validator
+## Vex
+### A Schema Validator
 
 [![Build Status](https://travis-ci.org/davidmarkclements/vex.svg?branch=master)](https://travis-ci.org/davidmarkclements/vex)
 
@@ -13,15 +13,21 @@ If the object doesn't satisfy the schema, then
 schema is considered "vexed", thus the object
 will be rejected.
 
-#### Install
+### Install
 
-##### Node
+#### Node
 
 ```sh
 npm install vex
 ```
 
-##### Browser
+Then simply require
+
+```
+var vex = require('vex');
+```
+
+#### Browser
 vex.js and vex.min.js are available in the dist folder.
 Client-side Vex is a UMD bundle generated with Browserify, 
 this means if you're using Require.js or some form of AMD
@@ -36,37 +42,81 @@ npm run dist
 ```
 
 
-#### Usage
+### Usage
 
-Instead of doing this
-
-```
-function buildAThing(config) {
-  if (typeof config.name === 'string') {
-    //do stuff
-  } else {
-    throw 'buildAThing config needs a name property that\'s a string'
-  }
-
-}
-```
-
-We can do this,
+#### Basic Example
 
 ```
-var vex = require('vex');
-
 var schema = {
   name: String
 }
 
 
-function buildAThing(config) {
+function doSomething(config) {
   vex(config, schema);
   //do stuff
 }
 
 ```
+
+#### Pinned Schema
+
+```
+
+function doSomething(config) {
+  vex(config);
+  //do stuff
+}
+
+doSomething.schema = {
+  name: String
+}
+
+```
+
+#### Optional and Required
+```
+
+function doSomething(config) {
+  vex(config);
+  //do stuff
+}
+
+doSomething.schema = {
+  opt: {
+    name: String,
+  },
+  req: {
+    id: Number
+  }
+}
+
+```
+
+#### Argument Schemas
+
+```
+
+function doSomething(name, id) {
+  vex(arguments);
+  //do stuff
+}
+
+doSomething.schema = [String, {req:{id: Number}}];
+
+```
+
+#### String Types
+
+#### Special types
+
+#### DOM Types
+
+#### Multiples types
+
+#### Assertion Functions
+
+#### settings.throw
 
 By default Vex will throw if a schema 
 hasn't been fulfilled.
@@ -75,7 +125,6 @@ We can turn this behaviour off:
 
 ```
 var vex = require('vex');
-vex.does.not.throw();
 
 var schema = {
 	name: String
@@ -106,6 +155,18 @@ problems at the bottom of the function with
 an else statement - which would create an
 extra level of nexting and put error handling
 in an unintuitive place (at the bottom).
+
+#### settings.batch
+
+#### settings.NaNIsNum
+
+#### settings.Element & settings.Node
+
+#### settings.labels
+
+#### settings.messages
+
+
 
 #### Tests
 Tests are written with mocha framework, to run
