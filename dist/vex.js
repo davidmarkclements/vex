@@ -1,4 +1,6 @@
-!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.vex=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+if (!('isNaN' in Number)) {
+  	Number.isNaN = function (value) { return value !== value; }
+}!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.vex=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 (function (global){
 var settings = {
   labels: {
@@ -18,15 +20,12 @@ var settings = {
   throw: true,
   batch: false,
   NaNIsNum: false,
-  Element: typeof Element !== 'undefined' ? Element : null,
-  Node: typeof Node !== 'undefined' ? Node : null
-
+  Element: typeof Element !== 'undefined' && Element,
+  Node: typeof Node !== 'undefined' && Node
 };
 
-function fetchSchemaSet(schema, label) {
-  if (!schema) {return;}
+function labelled(schema, label) {
   var labels = settings.labels[label];
-  if (typeof labels === 'string') {return labels;}
   
   var i = labels.length;
   var schemaSet;
@@ -41,11 +40,7 @@ function fetchSchemaSet(schema, label) {
 
 function fetchMessage(key, type, messageType) {
   var message = settings.messages[messageType];
-  if (!message) {return '';}
-  if (message instanceof Function) {
-    return message(key, type);
-  }
-  return key + message + type;
+  return message(key, type);
 }
 
 function is(value, type) {
@@ -94,16 +89,15 @@ function is(value, type) {
     type = type === null ? 'null' : typeof type;
   }
 
-  if (typeof type === 'string') {
     
-    ctor = type.substring(0,1).toUpperCase() + type.substring(1);
+  ctor = type.substring(0,1).toUpperCase() + type.substring(1);
 
-    if (global[ctor] instanceof Function) {
-      return is(value, global[ctor]);
-    }
-
-    return (typeofValue === type);
+  if (global[ctor] instanceof Function) {
+    return is(value, global[ctor]);
   }
+
+  return (typeofValue === type);
+  
 }
 
 function invalidate(target, schema, requiring) {
@@ -115,7 +109,7 @@ function invalidate(target, schema, requiring) {
   if (i <= 0) {return;}
   while (i--) {
     key = properties[i];
-    if (!key) {continue;}
+
     if (requiring && !(key in target)) {
       return {
         key: key,
@@ -142,13 +136,7 @@ function vexed(invalid) {
   var key = invalid.key;
   var type = invalid.type;
   var reason = invalid.reason;
-  if (!key) {return;}
-
   var err = error(key, fetchMessage(key, type, reason));
-
-  if (settings.vexed instanceof Function) {
-    return settings.vexed(err);
-  }
 
   return err;  
 }
@@ -168,8 +156,8 @@ function vex(target, schema) {
     }, {});
   }
 
-  var required = fetchSchemaSet(schema, 'required');
-  var optional = fetchSchemaSet(schema, 'optional');
+  var required = labelled(schema, 'required');
+  var optional = labelled(schema, 'optional');
   var err;
 
   if (!required) {
@@ -197,6 +185,7 @@ function vex(target, schema) {
 
 vex.settings = settings;
 vex.is = is;
+vex._labelled = labelled;
 
 module.exports = vex;
 
