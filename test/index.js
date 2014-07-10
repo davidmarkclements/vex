@@ -1,8 +1,9 @@
 var should = require('chai').should();
 
 if (typeof window === 'undefined') {
-  global.Element = function Element() { }
-  global.Node = function Node() { }  
+  global.Element = function Element() {}
+  global.Node = function Node() {}
+  Element.prototype = new Node;
 }
 
 //partially apply vex, allows us to use the .should.throw() syntax
@@ -240,13 +241,12 @@ test('should invalidate non DOM Elements (including DOM nodes)', function () {
 })
 
 suite('scheme: Node constructor')
-test('should validate DOM Nodes', function () {
+test('should validate DOM Nodes (including DOM elements)', function () {
   vex({test: document.createTextNode('test')}, {test: Node}).should.not.throw();
-
+  vex({test: document.createElement('div')}, {test: Node}).should.not.throw();
 })
 
-test('should invalidate non DOM Nodes (including DOM elements)', function () {
-  vex({test: document.createElement('div')}, {test: Node}).should.throw();
+test('should invalidate non DOM Nodes', function () {  
   vex({test:{}}, {test:Node}).should.throw();
   vex({test:function(){}}, {test:Node}).should.throw();
   vex({test:[]}, {test:Node}).should.throw();
