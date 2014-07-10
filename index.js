@@ -59,12 +59,12 @@ function is(value, type) {
   }
 
   type = Number.isNaN(type) ? 'nan' : type;
-  if (type && !settings.NaNIsNum && !!type.toLowerCase && type.toLowerCase() === 'nan') {
+  if (type && !settings.NaNIsNum && (type.toLowerCase && !type.toLowerCase.length) && type.toLowerCase() === 'nan') {
     return Number.isNaN(value)
   }
 
   if (!settings.NaNIsNum && Number.isNaN(value)) {
-    return type && !!type.toLowerCase && type.toLowerCase() === 'nan';
+    return type && (type.toLowerCase && !type.toLowerCase.length) && type.toLowerCase() === 'nan';
   }
 
   if (Array.isArray(type)) {
