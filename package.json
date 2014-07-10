@@ -1,6 +1,6 @@
 {
   "name": "vex",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A Schema Validator",
   "main": "index.js",
   "watch": {
@@ -49,16 +49,16 @@
       "test/*.js"
     ],
     "browsers": [
-    "ie/8..latest",
-    "firefox/17..latest",
-    "firefox/nightly",
-    "chrome/22..latest",
-    "chrome/canary",
-    "opera/12..latest",
-    "opera/next",
-    "safari/5.1..latest",
-    "ipad/6.0..latest",
-    "iphone/6.0..latest"
+      "ie/8..latest",
+      "firefox/17..latest",
+      "firefox/nightly",
+      "chrome/22..latest",
+      "chrome/canary",
+      "opera/12..latest",
+      "opera/next",
+      "safari/5.1..latest",
+      "ipad/6.0..latest",
+      "iphone/6.0..latest"
     ]
   }
 }
