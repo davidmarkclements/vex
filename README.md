@@ -176,14 +176,26 @@ simply do
 npm test
 ```
 
+To run browsers tests install testling
+```
+npm -g i testling
+```
+The run testling with the desired browser
+
+For instance, chrome on linux:
+```
+testling -x google-chrome
+```
+Or chrome on OS X
+```
+testling -x open -a 'Google Chrome'
+```
 
 ### Todo
 
-  * Update and bulk out readme
+  * Fill out readme
+  * Examples folder
   * Settings tests
   * Fail batching
-  * Browser testing
-
-
-
-
+  * Consider schema label names (opt, req)
+  * vex return values?
