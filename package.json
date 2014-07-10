@@ -4,16 +4,17 @@
   "description": "A Schema Validator",
   "main": "index.js",
   "watch": {
-    "cov-and-clean": ["index.js", "test/*.js"]
+    "cov-and-clean": [
+      "index.js",
+      "test/*.js"
+    ]
   },
   "scripts": {
     "precommit": "npm run test-no-cov",
     "prepush": "npm run test-no-cov",
     "dist": "npm run dist-dev & npm run dist-min",
-    "dist-dev": "node_modules/.bin/browserify -s vex -e index.js > dist/vex.js",
-    "dist-min": "node_modules/.bin/browserify -s vex -e index.js | uglifyjs > dist/vex.min.js",
-    "dist-test": "node_modules/.bin/browserify -s vexModule -e index.js > client-test/vex.js",
-    "build-client-test": "node_modules/.bin/browserify test/index.js > client-test/test.js",
+    "dist-dev": "(cat browser/polyfills.js; node_modules/.bin/browserify -s vex -e index.js) > dist/vex.js",
+    "dist-min": "(cat browser/polyfills.js; node_modules/.bin/browserify -s vex -e index.js) | uglifyjs > dist/vex.min.js",
     "test": "npm run coverage && npm run coveralls",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- -u qunit",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
@@ -21,11 +22,15 @@
     "test-watch": "node_modules/.bin/mocha -w -u qunit test",
     "cov-and-clean": "npm run coverage && rm -rf ./coverage",
     "test-cov-watch": "npm-watch",
-    "debug-test": "node_modules/.bin/node-debug -c node_modules/.bin/_mocha -u qunit"
+    "debug-test": "node_modules/.bin/node-debug -c node_modules/.bin/_mocha -u qunit",
+    "testling": "./node_modules/.bin/testling | ./node_modules/.bin/tap-colorize"
   },
   "testling": {
     "harness": "mocha-qunit",
-    "files": "test/*.js",
+    "files": [
+      "browser/*.js",
+      "test/*.js"
+    ],
     "browsers": [
       "ie/8..latest",
       "chrome/latest",
@@ -46,6 +51,8 @@
     "coveralls": "^2.11.1",
     "mocha-lcov-reporter": "0.0.1",
     "istanbul": "^0.3.0",
-    "npm-watch-no-prefix": "0.0.0"
+    "npm-watch-no-prefix": "0.0.0",
+    "testling": "^1.7.0",
+    "tap-colorize": "^1.2.0"
   }
 }
