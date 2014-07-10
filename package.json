@@ -25,18 +25,6 @@
     "debug-test": "node_modules/.bin/node-debug -c node_modules/.bin/_mocha -u qunit",
     "testling": "./node_modules/.bin/testling | ./node_modules/.bin/tap-colorize"
   },
-  "testling": {
-    "harness": "mocha-qunit",
-    "files": [
-      "browser/*.js",
-      "test/*.js"
-    ],
-    "browsers": [
-      "ie/8..latest",
-      "chrome/latest",
-      "firefox/latest"
-    ]
-  },
   "repository": "https://github.com/davidmarkclements/vex",
   "author": "David Mark Clements",
   "license": "MIT",
@@ -54,5 +42,23 @@
     "npm-watch-no-prefix": "0.0.0",
     "testling": "^1.7.0",
     "tap-colorize": "^1.2.0"
+  },
+  "testling": {
+    "files": [
+      "browser/*.js",
+      "test/*.js"
+    ],
+    "browsers": [
+    "ie/8..latest",
+    "firefox/17..latest",
+    "firefox/nightly",
+    "chrome/22..latest",
+    "chrome/canary",
+    "opera/12..latest",
+    "opera/next",
+    "safari/5.1..latest",
+    "ipad/6.0..latest",
+    "iphone/6.0..latest"
+    ]
   }
 }
