@@ -65,7 +65,7 @@ function doSomething(config) {
 
 function doSomething(config) {
   vex(config);
-  //do stuff
+  //do things
 }
 
 doSomething.schema = {
